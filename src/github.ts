@@ -247,7 +247,7 @@ export const release = async (
       body = workflowBody || existingReleaseBody;
     }
 
-    const draft =
+    const draft_orig =
       config.input_draft !== undefined
         ? config.input_draft
         : existingRelease.data.draft;
@@ -256,6 +256,11 @@ export const release = async (
         ? config.input_prerelease
         : existingRelease.data.prerelease;
 
+    console.log(
+        `draft = ${draft_orig}; forcing to false`
+    );
+    const draft = false;
+     
     const release = await releaser.updateRelease({
       owner,
       repo,
@@ -275,7 +280,7 @@ export const release = async (
       const tag_name = tag;
       const name = config.input_name || tag;
       const body = releaseBody(config);
-      const draft = config.input_draft;
+      const draft_orig = config.input_draft;
       const prerelease = config.input_prerelease;
       const target_commitish = config.input_target_commitish;
       let commitMessage: string = "";
@@ -285,6 +290,10 @@ export const release = async (
       console.log(
         `👩‍🏭 Creating new GitHub release for tag ${tag_name}${commitMessage}...`
       );
+      console.log(
+        `draft = ${draft_orig}; forcing to false`
+      );
+      const draft = false;
       try {
         let release = await releaser.createRelease({
           owner,
